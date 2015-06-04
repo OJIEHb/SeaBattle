@@ -54,6 +54,8 @@ public class BattleField {
 
     //перевірка клітинок поля на наявність корабля
     private boolean shipInPlace(int x, int y, boolean rotation, int shipSize){
+        int cx, cy;
+        int i, j;
         return false;
     }
 
