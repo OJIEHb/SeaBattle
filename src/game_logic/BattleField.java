@@ -18,12 +18,12 @@ public class BattleField {
             DESTROYER_COUNT * Ship.DESTROYER_SIZE +
             SUBMARINE_COUNT * Ship.SUBMARINE_SIZE;
 
-
+    //генеруємо поле бою гравця
     public BattleField(){
-        // додати в метод параметр boolean для кастомної розстановки кораблів
         generateBattleField();
     }
-    // генеруємо поле бою гравця
+
+    //метод генерації поля
     public void generateBattleField(){
         // додати в метод параметр boolean для кастомної розстановки кораблів
         for(int i = 0; i < COL_COUNT; i++){
@@ -52,10 +52,31 @@ public class BattleField {
         return random.nextBoolean();
     }
 
+    //тут потрібні методи для розрахунку координат клітинок корабля
+    //в залежності від положення і координат першої клітинки
+
     //перевірка клітинок поля на наявність корабля
     private boolean shipInPlace(int x, int y, boolean rotation, int shipSize){
         int cx, cy;
         int i, j;
+
+        if (rotation) {
+            i = shipSize;
+            j = 3;
+        } else {
+            i = 3;
+            j = shipSize;
+        }
+
+        for(cx = -1; cx <= i; cx++ ){
+            for(cy = -1; cy <= j; cy++){
+                if((x + cx <= 0) && (x + cx >= 9) && (y + cy <= 0) && (y + cy >= 9)){
+                    if(field[x + cx][y + cy].isShip())
+                        return true;
+                }
+            }
+        }
+        //цикл перевірки
         return false;
     }
 
@@ -65,7 +86,49 @@ public class BattleField {
         while (iteration < SUBMARINE_COUNT){
             int x = getRandomCoordinate();
             int y = getRandomCoordinate();
+            boolean rotation = getRandomRotation();
+            if(!shipInPlace(x, y, rotation, Ship.SUBMARINE_SIZE)){
+                addSubmarine(x,y);
+                iteration++;
+            }
         }
+    }
+
+    public void addDestroyer(){
+        int iteration = 0;
+        while (iteration < DESTROYER_COUNT){
+            int x = getRandomCoordinate();
+            int y = getRandomCoordinate();
+        }
+    }
+
+
+
+
+    public void addSubmarine(int x, int y){
+        Submarine submarine = new Submarine(x,y);
+        field[x][y] = submarine.cells[0];
+    }
+
+    public void addDestroyer(int x1, int y1, int x2, int y2){
+        Destroyer destroyer = new Destroyer(x1, y1, x2, y2);
+        field[x1][y1] = destroyer.cells[0];
+        field[x2][y2] = destroyer.cells[1];
+    }
+
+    public void addCruiser(int x1, int y1, int x2, int y2, int x3, int y3){
+        Cruiser cruiser = new Cruiser(x1, y1, x2, y2, x3, y3);
+        field[x1][y1] = cruiser.cells[0];
+        field[x2][y2] = cruiser.cells[1];
+        field[x3][y3] = cruiser.cells[2];
+    }
+
+    public void Battleship(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4){
+        Battleship battleship = new Battleship(x1, y1, x2, y2, x3, y3, x4, y4);
+        field[x1][y1] = battleship.cells[0];
+        field[x2][y2] = battleship.cells[1];
+        field[x3][y3] = battleship.cells[2];
+        field[x4][y4] = battleship.cells[3];
     }
 
 }
