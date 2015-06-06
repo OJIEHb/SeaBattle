@@ -1,4 +1,5 @@
 package game_logic;
+
 import java.util.Random;
 /**
  * Created by andrey on 04.06.15.
@@ -33,12 +34,15 @@ public class BattleField {
             }
         }
         //умова на кастомну чи автоматичну розстановку кораблів
+        addBattleship();
         //тут додаємо лінкори
+        addCruiser();
         //тут додаємо крейсери
+        addDestroyer();
         //тут додаємо есмінці
+        addSubmarine();
         //тут додаємо підводні човни
     }
-
 
     //генеруємо випадкові координати кораблів
     public static int getRandomCoordinate(){
@@ -54,6 +58,37 @@ public class BattleField {
 
     //тут потрібні методи для розрахунку координат клітинок корабля
     //в залежності від положення і координат першої клітинки
+    public int calculateXCoordinate(int x1, boolean rotation){
+        int x2;
+        if (!rotation) {
+            x2 = x1;
+        } else {
+            x2 = x1 + 1;
+        }
+
+        if ((x2 < 0) || (x2 > 9)) {
+            return 10;
+        } else {
+            return x2;
+        }
+    }
+
+    public int calculateYCoordinate(int y1, boolean rotation) {
+        int y2;
+
+        if (!rotation) {
+            y2 = y1 + 1;
+        } else {
+            y2 = y1;
+        }
+
+        if ((y2 < 0) || (y2 > 9)) {
+
+            return 10;
+        } else {
+            return y2;
+        }
+    }
 
     //перевірка клітинок поля на наявність корабля
     private boolean shipInPlace(int x, int y, boolean rotation, int shipSize){
@@ -99,11 +134,55 @@ public class BattleField {
         while (iteration < DESTROYER_COUNT){
             int x = getRandomCoordinate();
             int y = getRandomCoordinate();
+            boolean rotation = getRandomRotation();
+            // тут використати методи для розрахунку координат
+            int x1 = calculateXCoordinate(x, rotation);
+            int y1 = calculateYCoordinate(y, rotation);
+            if ((x1 != 10) && (y1 != 10))
+                if (!shipInPlace(x, y, getRandomRotation(), Ship.DESTROYER_SIZE)) {
+                    addDestroyer(x, y, x1, y1);
+                    iteration++;
+                }
         }
     }
 
+    public void addCruiser(){
+        int iteration = 0;
+        while (iteration < CRUISER_COUNT){
+            int x = getRandomCoordinate();
+            int y = getRandomCoordinate();
+            boolean rotation = getRandomRotation();
+            int x1 = calculateXCoordinate(x, rotation);
+            int y1 = calculateYCoordinate(y, rotation);
+            int x2 = calculateXCoordinate(x1, rotation);
+            int y2 = calculateYCoordinate(y1, rotation);
+            if ((x1 != 10) && (y1 != 10) & (x2 != 10) && (y2 != 10))
+                if (!shipInPlace(x, y, rotation, Ship.CRUISER_SIZE)) {
+                    addCruiser(x, y, x1, y1, x2, y2);
+                    iteration++;
+                }
+        }
+    }
 
-
+    public void addBattleship(){
+        int iteration = 0;
+        while (iteration < BATLESHIP_COUNT){
+            int x = getRandomCoordinate();
+            int y = getRandomCoordinate();
+            boolean rotation = getRandomRotation();
+            int x1 = calculateXCoordinate(x, rotation);
+            int y1 = calculateYCoordinate(y, rotation);
+            int x2 = calculateXCoordinate(x1, rotation);
+            int y2 = calculateYCoordinate(y1, rotation);
+            int x3 = calculateXCoordinate(x2, rotation);
+            int y3 = calculateYCoordinate(y2, rotation);
+            if ((x1 != 10) && (y1 != 10) && (x2 != 10) && (y2 != 10) && (x3 != 10) && (y3 != 10))
+                if (!shipInPlace(x, y, rotation, Ship.BATTLESHIP_SIZE)) {
+                    addBattleship(x, y, x1, y1, x2, y2, x3, y3);
+                    iteration++;
+                }
+        }
+    }
 
     public void addSubmarine(int x, int y){
         Submarine submarine = new Submarine(x,y);
@@ -123,12 +202,16 @@ public class BattleField {
         field[x3][y3] = cruiser.cells[2];
     }
 
-    public void Battleship(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4){
+    public void addBattleship(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4){
         Battleship battleship = new Battleship(x1, y1, x2, y2, x3, y3, x4, y4);
         field[x1][y1] = battleship.cells[0];
         field[x2][y2] = battleship.cells[1];
         field[x3][y3] = battleship.cells[2];
         field[x4][y4] = battleship.cells[3];
+    }
+
+    public Cell[][] getFieldMap() {
+        return field;
     }
 
 }
