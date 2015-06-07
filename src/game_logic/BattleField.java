@@ -34,13 +34,13 @@ public class BattleField {
             }
         }
         //умова на кастомну чи автоматичну розстановку кораблів
-        addBattleship();
+        //randomAddingBattleship();
         //тут додаємо лінкори
-        addCruiser();
+        //randomAddingCruiser();
         //тут додаємо крейсери
-        addDestroyer();
+        //randomAddingDestroyer();
         //тут додаємо есмінці
-        addSubmarine();
+        //randomAddingSubmarine();
         //тут додаємо підводні човни
     }
 
@@ -116,20 +116,20 @@ public class BattleField {
     }
 
     //додаємо підводний човен
-    public void addSubmarine(){
+    public void randomAddingSubmarine(){
         int iteration = 0;
         while (iteration < SUBMARINE_COUNT){
             int x = getRandomCoordinate();
             int y = getRandomCoordinate();
             boolean rotation = getRandomRotation();
             if(!shipInPlace(x, y, rotation, Ship.SUBMARINE_SIZE)){
-                addSubmarine(x,y);
+                createSubmarine(x,y);
                 iteration++;
             }
         }
     }
 
-    public void addDestroyer(){
+    public void randomAddingDestroyer(){
         int iteration = 0;
         while (iteration < DESTROYER_COUNT){
             int x = getRandomCoordinate();
@@ -140,13 +140,13 @@ public class BattleField {
             int y1 = calculateYCoordinate(y, rotation);
             if ((x1 != 10) && (y1 != 10))
                 if (!shipInPlace(x, y, getRandomRotation(), Ship.DESTROYER_SIZE)) {
-                    addDestroyer(x, y, x1, y1);
+                    createDestroyer(x, y, x1, y1);
                     iteration++;
                 }
         }
     }
 
-    public void addCruiser(){
+    public void randomAddingCruiser(){
         int iteration = 0;
         while (iteration < CRUISER_COUNT){
             int x = getRandomCoordinate();
@@ -156,15 +156,16 @@ public class BattleField {
             int y1 = calculateYCoordinate(y, rotation);
             int x2 = calculateXCoordinate(x1, rotation);
             int y2 = calculateYCoordinate(y1, rotation);
-            if ((x1 != 10) && (y1 != 10) & (x2 != 10) && (y2 != 10))
+            if ((x1 != 10) && (y1 != 10) & (x2 != 10) && (y2 != 10)) {
                 if (!shipInPlace(x, y, rotation, Ship.CRUISER_SIZE)) {
-                    addCruiser(x, y, x1, y1, x2, y2);
+                    createCruiser(x, y, x1, y1, x2, y2);
                     iteration++;
                 }
+            }
         }
     }
 
-    public void addBattleship(){
+    public void randomAddingBattleship(){
         int iteration = 0;
         while (iteration < BATLESHIP_COUNT){
             int x = getRandomCoordinate();
@@ -176,33 +177,74 @@ public class BattleField {
             int y2 = calculateYCoordinate(y1, rotation);
             int x3 = calculateXCoordinate(x2, rotation);
             int y3 = calculateYCoordinate(y2, rotation);
-            if ((x1 != 10) && (y1 != 10) && (x2 != 10) && (y2 != 10) && (x3 != 10) && (y3 != 10))
+            if ((x1 != 10) && (y1 != 10) && (x2 != 10) && (y2 != 10) && (x3 != 10) && (y3 != 10)) {
                 if (!shipInPlace(x, y, rotation, Ship.BATTLESHIP_SIZE)) {
-                    addBattleship(x, y, x1, y1, x2, y2, x3, y3);
+                    createBattleship(x, y, x1, y1, x2, y2, x3, y3);
                     iteration++;
                 }
+            }
         }
     }
 
-    public void addSubmarine(int x, int y){
+    public void customAddingSubmarine(int x, int y, boolean rotation){
+        if(!shipInPlace(x, y, rotation, Ship.SUBMARINE_SIZE)){
+            createSubmarine(x,y);
+        }
+    }
+
+    public void customAddingDestroyer(int x, int y, boolean rotation){
+        int x1 = calculateXCoordinate(x, rotation);
+        int y1 = calculateYCoordinate(y, rotation);
+        if ((x1 != 10) && (y1 != 10))
+            if (!shipInPlace(x, y, getRandomRotation(), Ship.DESTROYER_SIZE)) {
+                createDestroyer(x, y, x1, y1);
+            }
+    }
+
+    public void customAddingCruiser(int x, int y, boolean rotation){
+        int x1 = calculateXCoordinate(x, rotation);
+        int y1 = calculateYCoordinate(y, rotation);
+        int x2 = calculateXCoordinate(x1, rotation);
+        int y2 = calculateYCoordinate(y1, rotation);
+        if ((x1 != 10) && (y1 != 10) & (x2 != 10) && (y2 != 10)) {
+            if (!shipInPlace(x, y, rotation, Ship.CRUISER_SIZE)) {
+                createCruiser(x, y, x1, y1, x2, y2);
+            }
+        }
+    }
+
+    public void customAddingBattleship(int x, int y, boolean rotation){
+        int x1 = calculateXCoordinate(x, rotation);
+        int y1 = calculateYCoordinate(y, rotation);
+        int x2 = calculateXCoordinate(x1, rotation);
+        int y2 = calculateYCoordinate(y1, rotation);
+        int x3 = calculateXCoordinate(x2, rotation);
+        int y3 = calculateYCoordinate(y2, rotation);
+        if ((x1 != 10) && (y1 != 10) && (x2 != 10) && (y2 != 10) && (x3 != 10) && (y3 != 10)) {
+            if (!shipInPlace(x, y, rotation, Ship.BATTLESHIP_SIZE)) {
+                createBattleship(x, y, x1, y1, x2, y2, x3, y3);
+            }
+        }
+    }
+    public void createSubmarine(int x, int y){
         Submarine submarine = new Submarine(x,y);
         field[x][y] = submarine.cells[0];
     }
 
-    public void addDestroyer(int x1, int y1, int x2, int y2){
+    public void createDestroyer(int x1, int y1, int x2, int y2){
         Destroyer destroyer = new Destroyer(x1, y1, x2, y2);
         field[x1][y1] = destroyer.cells[0];
         field[x2][y2] = destroyer.cells[1];
     }
 
-    public void addCruiser(int x1, int y1, int x2, int y2, int x3, int y3){
+    public void createCruiser(int x1, int y1, int x2, int y2, int x3, int y3){
         Cruiser cruiser = new Cruiser(x1, y1, x2, y2, x3, y3);
         field[x1][y1] = cruiser.cells[0];
         field[x2][y2] = cruiser.cells[1];
         field[x3][y3] = cruiser.cells[2];
     }
 
-    public void addBattleship(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4){
+    public void createBattleship(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4){
         Battleship battleship = new Battleship(x1, y1, x2, y2, x3, y3, x4, y4);
         field[x1][y1] = battleship.cells[0];
         field[x2][y2] = battleship.cells[1];
