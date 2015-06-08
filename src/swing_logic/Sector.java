@@ -27,6 +27,7 @@ public class Sector extends Component implements MouseListener{
         addMouseListener(this);
     }
 
+    //створюємо сектор
     public static  Sector sectorCreate(SwingField field, int x, int y){
         if(field != null && 0<= x && x < SwingField.SECTOR_COUNT && 0 <= y && y < SwingField.SECTOR_COUNT)
             return new Sector(field, x, y);
@@ -38,11 +39,17 @@ public class Sector extends Component implements MouseListener{
 
     public boolean isShip() {return isShip;}
 
+    //Промальовуємо сектор(клітинку)
     private void draw(Graphics2D g2d, Color color) {
         g2d.setColor(color);
         g2d.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
         g2d.setColor(Color.BLACK);
         g2d.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+    }
+
+    public void paint(Graphics g){
+        Graphics2D g2d = (Graphics2D)g;
+        //малюємо поля
     }
 
     @Override
