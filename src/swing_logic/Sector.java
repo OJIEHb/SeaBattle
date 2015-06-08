@@ -22,12 +22,28 @@ public class Sector extends Component implements MouseListener{
         this.field = field;
         this.field.add(this);
         setSize(WIDTH, HEIGHT);
-        setLocation(SwingField.HEADER_SPACE + SwingField.SPACE_BETWEEN * 2+(WIDTH + SwingField.SPACE_BETWEEN)* x,
-                SwingField.HEADER_SPACE + SwingField.SPACE_BETWEEN * 2 + (HEIGHT + SwingField.SPACE_BETWEEN)* y);
+        setLocation(SwingField.HEADER_SPACE + SwingField.SPACE_BETWEEN * 2 + (WIDTH + SwingField.SPACE_BETWEEN) * x,
+                SwingField.HEADER_SPACE + SwingField.SPACE_BETWEEN * 2 + (HEIGHT + SwingField.SPACE_BETWEEN) * y);
         addMouseListener(this);
     }
 
+    public static  Sector sectorCreate(SwingField field, int x, int y){
+        if(field != null && 0<= x && x < SwingField.SECTOR_COUNT && 0 <= y && y < SwingField.SECTOR_COUNT)
+            return new Sector(field, x, y);
+        else
+            return null;
+    }
 
+    public void setShip() {isShip = true;}
+
+    public boolean isShip() {return isShip;}
+
+    private void draw(Graphics2D g2d, Color color) {
+        g2d.setColor(color);
+        g2d.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
