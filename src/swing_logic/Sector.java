@@ -76,4 +76,6 @@ public class Sector extends Component implements MouseListener{
     public void mouseExited(MouseEvent e) {
 
     }
+    public void setAttacked() {this.isAttacked = true;}
+
 }

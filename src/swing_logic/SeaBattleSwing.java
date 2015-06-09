@@ -22,4 +22,18 @@ public class SeaBattleSwing extends JFrame {
         setLayout(null);
         setVisible(true);
     }
+
+    public SwingField getPlayerField() {
+        return playerField;
+    }
+
+    public SwingField getComputerField() {
+        return computerField;
+    }
+
+    public void drawGameField(BattleField playerFieldMap, BattleField computerFieldMap) {
+        //тут проектуємо ігрове поле на інтерфейс
+
+        playerField.printField();
+    }
 }
