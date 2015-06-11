@@ -47,6 +47,8 @@ public class SwingField extends JComponent {
         selectedSector = sector;
         repaint();
     }
+
+    public BattleField getField() {return this.field;}
     public boolean isOpen() {return isOpen;}
 
     public void setGameEnd() {
@@ -66,4 +68,6 @@ public class SwingField extends JComponent {
             }
         }
     }
+
+
 }

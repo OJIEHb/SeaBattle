@@ -50,31 +50,83 @@ public class Sector extends Component implements MouseListener{
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D)g;
         //малюємо поля
+        if(field.isOpen()) {
+            Cell cell = field.getField().getFieldMap()[x][y];
+            if(isShip() && cell.getShip().shipIsDead()) {
+                draw(g2d, Color.BLACK);
+            } else if(isShip() && isAttacked) {
+                draw(g2d, Color.red);
+            } else if(isShip()){
+                draw(g2d, Color.green);
+            } else if(isAttacked) {
+                draw(g2d, Color.lightGray);
+            } else {
+                draw(g2d, Color.cyan);
+            }
+        } else {
+            if(isSelected) {
+                draw(g2d, Color.GREEN);
+            } else if(isAttacked ){
+                Cell cell = field.getField().getFieldMap()[x][y];
+                if(isShip() && cell.getShip().shipIsDead()) {
+                    draw(g2d, Color.green);
+                } else if(isShip()) {
+                    draw(g2d, Color.red);
+                } else {
+                    draw(g2d, Color.lightGray);
+                }
+
+            } else {
+                draw(g2d, Color.cyan);
+            }
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if(!field.isOpen()) {
 
+            if(!isAttacked) {
+                setAttacked();
+            }
+
+            Cell[][] cells = field.getField().getFieldMap();
+            Cell cell = cells[x][y];
+            cell.setWasFired();
+
+            field.setSelected(null);
+            if (cell.isShip()) {
+                setShip();
+                SeaBattle.userKilled = true;
+            }
+
+            repaint();
+            SeaBattle.userShooting = true;
+        }
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
+    public void mousePressed(MouseEvent e) {}
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
+    public void mouseReleased(MouseEvent e) {}
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        if(!field.isOpen()) {
+            isSelected = true;
+            field.setSelected(this);
+            repaint();
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        if(!field.isOpen()) {
+            isSelected = false;
+            field.setSelected(null);
+            repaint();
+        }
     }
     public void setAttacked() {this.isAttacked = true;}
 

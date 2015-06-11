@@ -9,7 +9,13 @@ import javax.swing.*;
 public class SeaBattleMain {
     public static void main(String[] args){
         final SeaBattle game = new SeaBattle();
+        SwingUtilities.invokeLater(new Runnable() {
 
+            public void run() {
+                SeaBattleSwing seaBattle = new SeaBattleSwing();
+
+            }
+        });
 
     }
 }
