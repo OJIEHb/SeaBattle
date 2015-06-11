@@ -64,8 +64,12 @@ public class Sector extends Component implements MouseListener{
                 draw(g2d, Color.cyan);
             }
         } else {
-            if(isSelected) {
-                draw(g2d, Color.GREEN);
+            if(isSelected && !isAttacked) {
+                draw(g2d, Color.cyan);
+                g2d.drawLine(0, getHeight() / 2, getWidth() - 1, getHeight() / 2);
+                g2d.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight() - 1);
+                g2d.drawOval(getWidth()/4,getHeight()/4,getWidth()/2,getHeight()/2);
+                //draw(g2d, Color.GREEN);
             } else if(isAttacked ){
                 Cell cell = field.getField().getFieldMap()[x][y];
                 if(isShip() && cell.getShip().shipIsDead()) {

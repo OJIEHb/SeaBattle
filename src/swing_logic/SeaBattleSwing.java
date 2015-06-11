@@ -33,7 +33,8 @@ public class SeaBattleSwing extends JFrame {
 
     public void drawGameField(BattleField playerFieldMap, BattleField computerFieldMap) {
         //тут проектуємо ігрове поле на інтерфейс
-
+        playerField.setBattleField(playerFieldMap);
+        computerField.setBattleField(computerFieldMap);
         playerField.printField();
     }
 }

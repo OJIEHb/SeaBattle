@@ -34,13 +34,13 @@ public class BattleField {
             }
         }
         //умова на кастомну чи автоматичну розстановку кораблів
-        //randomAddingBattleship();
+        randomAddingBattleship();
         //тут додаємо лінкори
-        //randomAddingCruiser();
+        randomAddingCruiser();
         //тут додаємо крейсери
-        //randomAddingDestroyer();
+        randomAddingDestroyer();
         //тут додаємо есмінці
-        //randomAddingSubmarine();
+        randomAddingSubmarine();
         //тут додаємо підводні човни
     }
 

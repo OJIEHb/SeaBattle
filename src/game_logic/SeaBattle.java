@@ -26,7 +26,8 @@ public class SeaBattle{
 
     public BattleField getPlayerField(){return this.playerFieldMap;}
 
-    public BattleField getComputerFieldMap() {return computerFieldMap;}
+    public BattleField getComputerField() {return computerFieldMap;}
+
 
     public static void waitUserAttack() {
         do {
@@ -38,6 +39,29 @@ public class SeaBattle{
         } while (!userShooting);
     }
 
+    public boolean checkWin(Cell[][] map){
+        int firedCells = 0;
+        for (int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
+                Cell cell = map[i][j];
+                if(cell.isShip() && cell.isFired()){
+                    firedCells++;
+                    if(firedCells == BattleField.SHIPS_CELLS_COUNT){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean computerAttack(){
+        int x = BattleField.getRandomCoordinate();
+        int y = BattleField.getRandomCoordinate();
+
+        return true;
+    }
+
     public void play(){
         boolean userWin = false;
         boolean computerWin = false;
@@ -45,6 +69,20 @@ public class SeaBattle{
         do{
             userShooting = false;
             waitUserAttack();
+
+            userWin = checkWin(computerFieldMap.getFieldMap());
+            if (userWin){
+                continue;
+            }
+
+            if(userKilled){
+                userKilled = false;
+                continue;
+            }
+
+
+
+
         }while(!userWin && !computerWin);
     }
 
