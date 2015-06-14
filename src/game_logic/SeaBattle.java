@@ -4,7 +4,6 @@ import swing_logic.SeaBattleSwing;
 import swing_logic.Sector;
 import swing_logic.SwingField;
 import javax.swing.*;
-import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 /**
  * Created by andrey on 07.06.15.
@@ -21,8 +20,6 @@ public class SeaBattle{
     }
 
     public void setSeaBattleSwing(SeaBattleSwing seaBattleSwing){this.seaBattleSwing = seaBattleSwing;}
-
-    public SeaBattleSwing getSeaBattleSwing(){ return seaBattleSwing;}
 
     public BattleField getPlayerField(){return this.playerFieldMap;}
 
@@ -79,11 +76,20 @@ public class SeaBattle{
                 userKilled = false;
                 continue;
             }
+            while (computerAttack()) {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(PAUSE);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
+            computerWin = checkWin(playerFieldMap.getFieldMap());
 
 
 
         }while(!userWin && !computerWin);
     }
+
 
 }

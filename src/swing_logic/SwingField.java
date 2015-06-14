@@ -4,7 +4,7 @@ import game_logic.Cell;
 import game_logic.BattleField;
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Field;
+
 
 /**
  * Created by andrey on 07.06.15.
@@ -33,6 +33,7 @@ public class SwingField extends JComponent {
         selectedSector = null;
 
         setSize(WIDTH, HEIGHT);
+        printHeader();
         //додати шапку(цифри, букви)
     }
     public SeaBattleSwing getGame() {return this.game;}
@@ -69,5 +70,22 @@ public class SwingField extends JComponent {
         }
     }
 
+    private void printHeader() {
+        char[] letters = {'Р', 'Е', 'С', 'П', 'У', 'Б', 'Л', 'І', 'К', 'А'};
+        for(int i = 0; i < SECTOR_COUNT; i++) {
+            JLabel horizontal = new JLabel(String.valueOf(i + 1));
+            if(i < letters.length)
+                horizontal.setText(String.valueOf(letters[i]));
+            JLabel vertical = new JLabel(String.valueOf(i + 1));
+            horizontal.setSize(Sector.WIDTH, HEADER_SPACE);
+            vertical.setSize(HEADER_SPACE, Sector.HEIGHT);
+            horizontal.setLocation(5+HEADER_SPACE + SPACE_BETWEEN * 2 +
+                    (Sector.WIDTH + SPACE_BETWEEN) * i, SPACE_BETWEEN);
+            vertical.setLocation(SPACE_BETWEEN, HEADER_SPACE + SPACE_BETWEEN * 2 +
+                    (Sector.HEIGHT + SPACE_BETWEEN) * i);
+            add(horizontal);
+            add(vertical);
+        }
+    }
 
 }
