@@ -25,7 +25,6 @@ public class SeaBattle{
 
     public BattleField getComputerField() {return computerFieldMap;}
 
-
     public static void waitUserAttack() {
         do {
             try {
@@ -56,7 +55,27 @@ public class SeaBattle{
         int x = BattleField.getRandomCoordinate();
         int y = BattleField.getRandomCoordinate();
 
-        return true;
+        SwingField playerSwingField = seaBattleSwing.getPlayerField();
+        Sector sector = playerSwingField.getSectors()[x][y];
+
+        Cell[][] cells = playerFieldMap.getFieldMap();
+        Cell cell = cells[x][y];
+
+        while (cell.isFired()){
+            x = BattleField.getRandomCoordinate();
+            y = BattleField.getRandomCoordinate();
+            cell = cells[x][y];
+        }
+        cell.setWasFired();
+
+        sector.setAttacked();
+        if (cell.isShip()) {
+            sector.setShip();
+        }
+
+        sector.repaint();
+
+        return cell.isShip();
     }
 
     public void play(){
@@ -88,8 +107,37 @@ public class SeaBattle{
 
 
 
-        }while(!userWin && !computerWin);
-    }
+        } while(!userWin && !computerWin);
 
+        if (computerWin) {
+            showWinMessageBox("Ви програли", false);
+        } else {
+           showWinMessageBox("Ви виграли", true);
+        }
+
+    }
+    private void showWinMessageBox(String message, boolean userWin) {
+        if (userWin) {
+            seaBattleSwing.getComputerField().setGameEnd();
+            seaBattleSwing.getComputerField().repaint();
+        } else {
+            SwingField playerSwingField = seaBattleSwing.getPlayerField();
+            playerSwingField.setGameEnd();
+            playerSwingField.repaint();
+        }
+
+       /** Object[] options = {"Так", "Ні"};
+        int result = JOptionPane.showOptionDialog(seaBattleSwing.getComputerField().getParent(), "Розпочати нову гру?", message,
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[1]);
+
+        if (result == 0) {
+/// можливо перезапуск гри
+        }**/
+
+    }
 
 }
