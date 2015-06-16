@@ -1,15 +1,15 @@
-package game_logic;
+package game.logic;
 
-import swing_logic.SeaBattleSwing;
-import swing_logic.Sector;
-import swing_logic.SwingField;
-import javax.swing.*;
+import swing.logic.SeaBattleSwing;
+import swing.logic.Sector;
+import swing.logic.SwingField;
+
 import java.util.concurrent.TimeUnit;
 /**
  * Created by andrey on 07.06.15.
  */
 public class SeaBattle{
-    public  static final int PAUSE = 1;
+    public  static final int PAUSE = 10;
     private BattleField playerFieldMap, computerFieldMap;
     private SeaBattleSwing seaBattleSwing;
     public static boolean userShooting, userKilled;

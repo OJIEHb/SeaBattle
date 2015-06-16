@@ -1,6 +1,6 @@
-package swing_logic;
+package swing.logic;
 
-import game_logic.BattleField;
+import game.logic.BattleField;
 import javax.swing.*;
 
 /**

@@ -1,7 +1,7 @@
-package swing_logic;
+package swing.logic;
 
-import game_logic.Cell;
-import game_logic.SeaBattle;
+import game.logic.Cell;
+import game.logic.SeaBattle;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
@@ -59,7 +59,9 @@ public class Sector extends Component implements MouseListener{
             } else if(isShip()){
                 draw(g2d, Color.green);
             } else if(isAttacked) {
-                draw(g2d, Color.lightGray);
+                draw(g2d, Color.cyan);
+                g2d.setColor(Color.black);
+                g2d.fillOval(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
             } else {
                 draw(g2d, Color.cyan);
             }
@@ -68,16 +70,19 @@ public class Sector extends Component implements MouseListener{
                 draw(g2d, Color.cyan);
                 g2d.drawLine(0, getHeight() / 2, getWidth() - 1, getHeight() / 2);
                 g2d.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight() - 1);
-                g2d.drawOval(getWidth()/4,getHeight()/4,getWidth()/2,getHeight()/2);
+                g2d.drawOval(getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2);
                 //draw(g2d, Color.GREEN);
+
             } else if(isAttacked ){
                 Cell cell = field.getField().getFieldMap()[x][y];
                 if(isShip() && cell.getShip().shipIsDead()) {
-                    draw(g2d, Color.green);
+                    draw(g2d, Color.black);
                 } else if(isShip()) {
                     draw(g2d, Color.red);
                 } else {
-                    draw(g2d, Color.lightGray);
+                    draw(g2d, Color.cyan);
+                    g2d.setColor(Color.black);
+                    g2d.fillOval(getWidth()/4,getHeight()/4,getWidth()/2,getHeight()/2);
                 }
 
             } else {

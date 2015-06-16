@@ -1,4 +1,4 @@
-package game_logic;
+package game.logic;
 
 /**
  * Created by andrey on 04.06.15.

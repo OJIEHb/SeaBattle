@@ -1,7 +1,7 @@
-package swing_logic;
+package swing.logic;
 
-import game_logic.Cell;
-import game_logic.BattleField;
+import game.logic.Cell;
+import game.logic.BattleField;
 import javax.swing.*;
 import java.awt.*;
 
@@ -60,13 +60,13 @@ public class SwingField extends JComponent {
     private void paintWinOrLoseMessage(Graphics2D g2d) {
         if(isOpen) {
             g2d.setColor(Color.red);
-            g2d.scale(10, 10);
-            g2d.drawString("LOSE", 1, 15);
+            g2d.scale(8, 8);
+            g2d.drawString("LOSE", 5, 15);
         }
         else {
             g2d.setColor(Color.green);
-            g2d.scale(10, 10);
-            g2d.drawString("WIN", 1, 15);
+            g2d.scale(8, 8);
+            g2d.drawString("WIN", 5, 15);
         }
     }
 

@@ -1,5 +1,5 @@
-import  game_logic.SeaBattle;
-import swing_logic.SeaBattleSwing;
+import game.logic.SeaBattle;
+import swing.logic.SeaBattleSwing;
 
 import javax.swing.*;
 
@@ -24,5 +24,6 @@ public class SeaBattleMain {
         game.play();
 
     }
+
 
 }
