@@ -10,7 +10,6 @@ public class Ship {
             DESTROYER_SIZE = 2,
             CRUISER_SIZE = 3,
             BATTLESHIP_SIZE = 4;
-    public static boolean isLife = true;
 
     protected Cell[] cells;//Клітинки, що займає корабель
 

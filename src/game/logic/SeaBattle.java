@@ -4,6 +4,8 @@ import swing.logic.SeaBattleSwing;
 import swing.logic.Sector;
 import swing.logic.SwingField;
 
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 /**
  * Created by andrey on 07.06.15.
@@ -13,6 +15,7 @@ public class SeaBattle{
     private BattleField playerFieldMap, computerFieldMap;
     private SeaBattleSwing seaBattleSwing;
     public static boolean userShooting, userKilled;
+    private int firedX, firedY;
 
     public SeaBattle() {
         playerFieldMap = new BattleField();
@@ -52,6 +55,7 @@ public class SeaBattle{
     }
 
     private boolean computerAttack(){
+
         int x = BattleField.getRandomCoordinate();
         int y = BattleField.getRandomCoordinate();
 
@@ -61,13 +65,21 @@ public class SeaBattle{
         Cell[][] cells = playerFieldMap.getFieldMap();
         Cell cell = cells[x][y];
 
+
         while (cell.isFired()){
             x = BattleField.getRandomCoordinate();
             y = BattleField.getRandomCoordinate();
             cell = cells[x][y];
         }
         cell.setWasFired();
-
+        if (cell.isShip()&&!cell.getShip().shipIsDead()){
+            ArrayList list = calculateCoordinateStrickenCell(x,y);
+            for (int i = 0; i < list.size(); i++ ){
+                Cell cell1 = (Cell)list.get(i);
+                System.out.println("X = " + cell1.x + " Y = " + cell1.y);
+            }
+            System.out.println("ok");
+        }
         sector.setAttacked();
         if (cell.isShip()) {
             sector.setShip();
@@ -78,6 +90,28 @@ public class SeaBattle{
         return cell.isShip();
     }
 
+    public ArrayList calculateCoordinateStrickenCell(int x, int y) {
+        Cell[][] cells = playerFieldMap.getFieldMap();
+        ArrayList list = new ArrayList();
+        if (x < 9) {
+            if (!cells[x + 1][y].isFired()) {
+                list.add(cells[x + 1][y]);
+            }
+        }
+        if(x > 0){
+        if(!cells[x-1][y].isFired() ){
+            list.add(cells[x-1][y]);
+        }}
+        if(y > 0){
+        if(!cells[x][y-1].isFired()){
+            list.add(cells[x][y-1]);
+        }}
+        if(y < 9){
+        if(!cells[x][y+1].isFired()){
+            list.add(cells[x][y+1]);
+        }}
+        return list;
+    }
     public void play(){
         boolean userWin = false;
         boolean computerWin = false;
