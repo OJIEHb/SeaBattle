@@ -6,6 +6,7 @@ import swing.logic.SwingField;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 /**
@@ -16,7 +17,8 @@ public class SeaBattle{
     private BattleField playerFieldMap, computerFieldMap;
     private SeaBattleSwing seaBattleSwing;
     public static boolean userShooting, userKilled;
-    private int firedX, firedY;
+    private int firedX = -1, firedY = -1;
+    private Random random = new Random();
 
     public SeaBattle() {
         playerFieldMap = new BattleField();
@@ -56,44 +58,46 @@ public class SeaBattle{
     }
 
     private boolean computerAttack(){
-        Scanner scanner = new Scanner(System.in);
-        int x = scanner.nextInt();
-        int y = scanner.nextInt();
+        int x , y;
+        Cell[][] cells = playerFieldMap.getFieldMap();
 
+        if(firedX !=-1 && firedY != -1&& !cells[firedX][firedY].getShip().shipIsDead()){
+            ArrayList<Cell> list = calculateCoordinateStrickenCell(firedX, firedY);
+            int number = random.nextInt(list.size());
+            Cell cell = list.get(number);
+            x = cell.x;
+            y = cell.y;
+            list.remove(number);
+
+        }else {
+            do {
+                x = BattleField.getRandomCoordinate();
+                y = BattleField.getRandomCoordinate();
+            }while(cells[x][y].isFired());
+        }
         SwingField playerSwingField = seaBattleSwing.getPlayerField();
         Sector sector = playerSwingField.getSectors()[x][y];
-
-        Cell[][] cells = playerFieldMap.getFieldMap();
         Cell cell = cells[x][y];
-
-
-        while (cell.isFired()){
-            x = BattleField.getRandomCoordinate();
-            y = BattleField.getRandomCoordinate();
-            cell = cells[x][y];
+        if(cell.isShip()){
+            firedX = cell.x;
+            firedY = cell.y;
+            if(cell.getShip().shipIsDead()) {
+                firedX = -1;
+                firedY = -1;
+            }
         }
         cell.setWasFired();
-        if (cell.isShip()&&!cell.getShip().shipIsDead()){
-            ArrayList list = calculateCoordinateStrickenCell(x,y);
-            for (int i = 0; i < list.size(); i++ ){
-                Cell cell1 = (Cell)list.get(i);
-                System.out.println("X = " + cell1.x + " Y = " + cell1.y);
-            }
-            System.out.println("ok");
-        }
         sector.setAttacked();
         if (cell.isShip()) {
             sector.setShip();
         }
-
         sector.repaint();
-
         return cell.isShip();
     }
 
-    public ArrayList calculateCoordinateStrickenCell(int x, int y) {
+    public ArrayList<Cell> calculateCoordinateStrickenCell(int x, int y) {
         Cell[][] cells = playerFieldMap.getFieldMap();
-        ArrayList list = new ArrayList();
+        ArrayList<Cell> list = new ArrayList<Cell>();
         if (x < 9 && !checkCellUp(x,y-1,y) && !checkCellDown(x,y+1,y)){
             if (!cells[x + 1][y].isFired()) {
                 list.add(cells[x + 1][y]);

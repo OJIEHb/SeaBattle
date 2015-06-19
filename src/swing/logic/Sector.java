@@ -55,7 +55,7 @@ public class Sector extends Component implements MouseListener{
             if(isShip() && cell.getShip().shipIsDead()) {
                 draw(g2d, Color.BLACK);
             } else if(isShip() && isAttacked) {
-                draw(g2d, Color.red);
+                draw(g2d, Color.BLACK);
             } else if(isShip()){
                 draw(g2d, Color.green);
             } else if(isAttacked) {
