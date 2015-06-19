@@ -6,6 +6,7 @@ import swing.logic.SwingField;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 /**
  * Created by andrey on 07.06.15.
@@ -55,9 +56,9 @@ public class SeaBattle{
     }
 
     private boolean computerAttack(){
-
-        int x = BattleField.getRandomCoordinate();
-        int y = BattleField.getRandomCoordinate();
+        Scanner scanner = new Scanner(System.in);
+        int x = scanner.nextInt();
+        int y = scanner.nextInt();
 
         SwingField playerSwingField = seaBattleSwing.getPlayerField();
         Sector sector = playerSwingField.getSectors()[x][y];
@@ -93,24 +94,80 @@ public class SeaBattle{
     public ArrayList calculateCoordinateStrickenCell(int x, int y) {
         Cell[][] cells = playerFieldMap.getFieldMap();
         ArrayList list = new ArrayList();
-        if (x < 9) {
+        if (x < 9 && !checkCellUp(x,y-1,y) && !checkCellDown(x,y+1,y)){
             if (!cells[x + 1][y].isFired()) {
                 list.add(cells[x + 1][y]);
             }
+            if (checkCellDown(x+1, y, x)){
+                if(cells[x+2][y].isFired() && x+3 < 9){
+                    list.add(cells[x+3][y]);
+                }
+                else {
+                    list.add(cells[x + 2][y]);
+                }
+            }
         }
-        if(x > 0){
-        if(!cells[x-1][y].isFired() ){
-            list.add(cells[x-1][y]);
-        }}
-        if(y > 0){
-        if(!cells[x][y-1].isFired()){
-            list.add(cells[x][y-1]);
-        }}
-        if(y < 9){
-        if(!cells[x][y+1].isFired()){
-            list.add(cells[x][y+1]);
-        }}
+
+        if (x > 0 && !checkCellUp(x,y-1,y) && !checkCellDown(x,y+1,y)){
+            if(!cells[x-1][y].isFired() ){
+                list.add(cells[x-1][y]);
+            }
+            if(checkCellUp(x-1,y,x)){
+                if(cells[x-2][y].isFired()&& x-3 >0){
+                    list.add(cells[x-3][y]);
+                }
+                else {
+                    list.add(cells[x - 2][y]);
+                }
+            }
+        }
+        if (y > 0 && !checkCellUp(x-1,y,x) && !checkCellDown(x + 1, y, x)){
+            if(!cells[x][y-1].isFired()){
+                list.add(cells[x][y-1]);
+            }
+            if(checkCellUp(x,y-1,y)){
+                if(cells[x][y-2].isFired()&& y-3 >0){
+                    list.add(cells[x][y-3]);
+                }
+                else {
+                    list.add(cells[x][y - 2]);
+                }
+            }
+        }
+        if (y < 9 && !checkCellUp(x-1,y,x) && !checkCellDown(x+1,y,x)){
+            if(!cells[x][y+1].isFired()){
+                list.add(cells[x][y+1]);
+            }
+            if (checkCellDown(x, y+1, y)){
+                if(cells[x][y+2].isFired() && y+3 < 9){
+                    list.add(cells[x][y+3]);
+                }
+                else {
+                    list.add(cells[x ][y+ 2]);
+                }
+            }
+        }
         return list;
+    }
+    public boolean checkCellDown(int x,int y, int checkOrdinate){
+        Cell[][] cells = playerFieldMap.getFieldMap();
+        try {
+            if (cells[x][y].isFired() && cells[x][y].isShip() && checkOrdinate + 2 < 9) {
+                return true;
+            } else {
+                return false;
+            }
+        }catch (Exception e){return false;}
+    }
+    public boolean checkCellUp(int x,int y, int checkOrdinate){
+        Cell[][] cells = playerFieldMap.getFieldMap();
+        try{
+        if (cells[x][y].isFired() && cells[x][y].isShip() && checkOrdinate-2 > 0){
+            return true;
+        }else {
+            return false;
+        }
+        }catch (Exception e){return false;}
     }
     public void play(){
         boolean userWin = false;
