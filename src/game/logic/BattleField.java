@@ -11,7 +11,7 @@ public class BattleField {
 
     private Cell[][] field = new Cell[ROW_COUNT][COL_COUNT];
     public static final int BATLESHIP_COUNT = 1;
-    public static final int CRUISER_COUNT = 2;
+    public static final int CRUISER_COUNT =2;
     public static final int DESTROYER_COUNT = 3;
     public static final int SUBMARINE_COUNT = 4;
     public static final int SHIPS_CELLS_COUNT = BATLESHIP_COUNT * Ship.BATTLESHIP_SIZE +

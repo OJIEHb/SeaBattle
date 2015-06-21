@@ -56,18 +56,19 @@ public class SeaBattle{
         }
         return false;
     }
-
+ 
     private boolean computerAttack(){
         int x , y;
         Cell[][] cells = playerFieldMap.getFieldMap();
-
         if(firedX !=-1 && firedY != -1&& !cells[firedX][firedY].getShip().shipIsDead()){
             ArrayList<Cell> list = calculateCoordinateStrickenCell(firedX, firedY);
-            int number = random.nextInt(list.size());
-            Cell cell = list.get(number);
-            x = cell.x;
-            y = cell.y;
-            list.remove(number);
+            int number;
+            do{
+                number = random.nextInt(list.size());
+                Cell cell = list.get(number);
+                x = cell.x;
+                y = cell.y;
+            }while(cells[x][y].isFired());
 
         }else {
             do {
@@ -78,15 +79,31 @@ public class SeaBattle{
         SwingField playerSwingField = seaBattleSwing.getPlayerField();
         Sector sector = playerSwingField.getSectors()[x][y];
         Cell cell = cells[x][y];
+        cell.setWasFired();
         if(cell.isShip()){
             firedX = cell.x;
             firedY = cell.y;
             if(cell.getShip().shipIsDead()) {
                 firedX = -1;
                 firedY = -1;
+                for(int i = 0; i < 9; i++){
+                    for(int j = 0; j < 9; j++){
+                        if(cells[i][j].isShip()){
+                            if(cells[i][j].getShip().shipIsDead()){
+                                try{cells[i][j+1].setWasFired();}catch(Exception e){}
+                                try{cells[i][j-1].setWasFired();}catch(Exception e){}
+                                try{cells[i-1][j].setWasFired();}catch(Exception e){}
+                                try{cells[i+1][j].setWasFired();}catch(Exception e){}
+                                try{cells[i+1][j+1].setWasFired();}catch(Exception e){}
+                                try{cells[i+1][j-1].setWasFired();}catch(Exception e){}
+                                try{cells[i-1][j+1].setWasFired();}catch(Exception e){}
+                                try{cells[i-1][j-1].setWasFired();}catch(Exception e){}
+                            }
+                        }
+                    }
+                }
             }
         }
-        cell.setWasFired();
         sector.setAttacked();
         if (cell.isShip()) {
             sector.setShip();
@@ -98,12 +115,12 @@ public class SeaBattle{
     public ArrayList<Cell> calculateCoordinateStrickenCell(int x, int y) {
         Cell[][] cells = playerFieldMap.getFieldMap();
         ArrayList<Cell> list = new ArrayList<Cell>();
-        if (x < 9 && !checkCellUp(x,y-1,y) && !checkCellDown(x,y+1,y)){
+        if (x < 9 && !checkCellUp(x,y-1,y) && !checkCellDown(x, y + 1, y)){
             if (!cells[x + 1][y].isFired()) {
                 list.add(cells[x + 1][y]);
             }
             if (checkCellDown(x+1, y, x)){
-                if(cells[x+2][y].isFired() && x+3 < 9){
+                if(cells[x+2][y].isFired() && cells[x+2][y].isShip() && x+3 < 9){
                     list.add(cells[x+3][y]);
                 }
                 else {
@@ -111,13 +128,12 @@ public class SeaBattle{
                 }
             }
         }
-
         if (x > 0 && !checkCellUp(x,y-1,y) && !checkCellDown(x,y+1,y)){
             if(!cells[x-1][y].isFired() ){
-                list.add(cells[x-1][y]);
+                list.add(cells[x - 1][y]);
             }
             if(checkCellUp(x-1,y,x)){
-                if(cells[x-2][y].isFired()&& x-3 >0){
+                if(cells[x-2][y].isFired()&& cells[x-2][y].isShip()&& x-3 >0){
                     list.add(cells[x-3][y]);
                 }
                 else {
@@ -129,8 +145,8 @@ public class SeaBattle{
             if(!cells[x][y-1].isFired()){
                 list.add(cells[x][y-1]);
             }
-            if(checkCellUp(x,y-1,y)){
-                if(cells[x][y-2].isFired()&& y-3 >0){
+            if(checkCellUp(x, y - 1, y)){
+                if(cells[x][y-2].isFired()&& cells[x][y-2].isShip()&& y-3 >0){
                     list.add(cells[x][y-3]);
                 }
                 else {
@@ -143,7 +159,7 @@ public class SeaBattle{
                 list.add(cells[x][y+1]);
             }
             if (checkCellDown(x, y+1, y)){
-                if(cells[x][y+2].isFired() && y+3 < 9){
+                if(cells[x][y+2].isFired() && cells[x][y+2].isShip()&& y+3 < 9){
                     list.add(cells[x][y+3]);
                 }
                 else {
@@ -152,6 +168,27 @@ public class SeaBattle{
             }
         }
         return list;
+    }
+
+    public Cell[][] setFiredCellAroundShip(){
+        Cell[][] cells = playerFieldMap.getFieldMap();
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(cells[i][j].isShip()){
+                    if(cells[i][j].getShip().shipIsDead()){
+                        try{cells[i][j+1].setWasFired();}catch(Exception e){}
+                        try{cells[i][j-1].setWasFired();}catch(Exception e){}
+                        try{cells[i-1][j].setWasFired();}catch(Exception e){}
+                        try{cells[i+1][j].setWasFired();}catch(Exception e){}
+                        try{cells[i+1][j+1].setWasFired();}catch(Exception e){}
+                        try{cells[i+1][j-1].setWasFired();}catch(Exception e){}
+                        try{cells[i-1][j+1].setWasFired();}catch(Exception e){}
+                        try{cells[i-1][j-1].setWasFired();}catch(Exception e){}
+                    }
+                }
+            }
+        }
+        return cells;
     }
     public boolean checkCellDown(int x,int y, int checkOrdinate){
         Cell[][] cells = playerFieldMap.getFieldMap();
@@ -206,8 +243,22 @@ public class SeaBattle{
 
         if (computerWin) {
             showWinMessageBox("Ви програли", false);
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            seaBattleSwing.setVisible(false);
+            System.exit(0);
         } else {
            showWinMessageBox("Ви виграли", true);
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            seaBattleSwing.setVisible(false);
+            System.exit(0);
         }
 
     }

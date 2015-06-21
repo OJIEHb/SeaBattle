@@ -60,13 +60,13 @@ public class SwingField extends JComponent {
     private void paintWinOrLoseMessage(Graphics2D g2d) {
         if(isOpen) {
             g2d.setColor(Color.red);
-            g2d.scale(8, 8);
-            g2d.drawString("LOSE", 5, 15);
+            g2d.scale(7, 7);
+            g2d.drawString("LOSE", 2, 20);
         }
         else {
             g2d.setColor(Color.green);
-            g2d.scale(8, 8);
-            g2d.drawString("WIN", 5, 15);
+            g2d.scale(7, 7);
+            g2d.drawString("WIN", 5, 20);
         }
     }
 
@@ -131,7 +131,7 @@ public class SwingField extends JComponent {
     }
 
     private void printHeader() {
-        char[] letters = {'Р', 'Е', 'С', 'П', 'У', 'Б', 'Л', 'І', 'К', 'А'};
+        char[] letters = {'Р', 'E', 'С', 'П', 'У', 'Б', 'Л', 'I', 'K', 'A'};
         for(int i = 0; i < SECTOR_COUNT; i++) {
             JLabel horizontal = new JLabel(String.valueOf(i + 1));
             if(i < letters.length)

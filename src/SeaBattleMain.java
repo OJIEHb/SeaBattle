@@ -17,13 +17,13 @@ public class SeaBattleMain {
                 SeaBattleSwing seaBattle = new SeaBattleSwing();
                 seaBattle.drawGameField(game.getPlayerField(), game.getComputerField());
                 game.setSeaBattleSwing(seaBattle);
-
             }
         });
 
         game.play();
 
     }
+
 
 
 }

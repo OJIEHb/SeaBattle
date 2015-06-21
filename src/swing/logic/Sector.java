@@ -94,21 +94,17 @@ public class Sector extends Component implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         if(!field.isOpen()) {
-
             if(!isAttacked) {
                 setAttacked();
             }
-
             Cell[][] cells = field.getField().getFieldMap();
             Cell cell = cells[x][y];
             cell.setWasFired();
-
             field.setSelected(null);
             if (cell.isShip()) {
                 setShip();
                 SeaBattle.userKilled = true;
             }
-
             repaint();
             SeaBattle.userShooting = true;
         }
