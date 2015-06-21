@@ -1,7 +1,8 @@
-package game_logic;
+package game.logic;
 
 /**
  * Created by andrey on 04.06.15.
+ * Клітинка поля бою
  */
 public class Cell {
     protected int x, y;
